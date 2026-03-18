@@ -1,0 +1,61 @@
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.server-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.server-table th,
+.server-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #1e2235;
+}
+
+.server-table th {
+  background: #1a1d27;
+  color: #94a3b8;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.server-table tbody tr:hover {
+  background: #1a1d27;
+}
+
+.mono {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.85rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color, #94a3b8);
+  background: color-mix(in srgb, var(--color, #94a3b8) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color, #94a3b8) 40%, transparent);
+}
+
+.server-table a {
+  color: #60a5fa;
+  text-decoration: none;
+}
+
+.server-table a:hover {
+  text-decoration: underline;
+}
+
+.actions {
+  display: flex;
+  gap: 0.4rem;
+  white-space: nowrap;
+}

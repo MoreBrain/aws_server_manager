@@ -1,0 +1,25 @@
+.ip-cell {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.ip-cell input {
+  width: 110px;
+  background: #0f1117;
+  border: 1px solid #2d3148;
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  color: #e2e8f0;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.82rem;
+}
+
+.ip-cell input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.ip-cell input.error {
+  border-color: #ef4444;
+}
