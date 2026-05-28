@@ -35,7 +35,7 @@ def _tick() -> None:
             continue
 
         # --- Start logic ---
-        if not reservation.started and current_time >= reservation.start_time:
+        if reservation.start_time and not reservation.started and current_time >= reservation.start_time:
             log.info("Attempting to start %s in %s", reservation.instance_id, reservation.region)
             try:
                 ok = aws_client.start_instance(reservation.instance_id, reservation.region)
@@ -53,7 +53,7 @@ def _tick() -> None:
 
         # --- Stop logic ---
         if (
-            reservation.started
+            (reservation.start_time is None or reservation.started)
             and not reservation.stopped
             and reservation.stop_time is not None
             and current_time >= reservation.stop_time

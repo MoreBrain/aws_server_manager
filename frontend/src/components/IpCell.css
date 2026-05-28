@@ -6,11 +6,11 @@
 
 .ip-cell input {
   width: 110px;
-  background: #0f1117;
-  border: 1px solid #2d3148;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
   border-radius: 6px;
   padding: 0.35rem 0.5rem;
-  color: #e2e8f0;
+  color: #111827;
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   font-size: 0.82rem;
 }
@@ -18,8 +18,10 @@
 .ip-cell input:focus {
   outline: none;
   border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .ip-cell input.error {
   border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
 }

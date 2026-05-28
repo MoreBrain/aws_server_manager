@@ -1,5 +1,8 @@
 .table-wrapper {
   overflow-x: auto;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
 }
 
 .server-table {
@@ -12,12 +15,16 @@
 .server-table td {
   padding: 0.75rem 1rem;
   text-align: left;
-  border-bottom: 1px solid #1e2235;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.server-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .server-table th {
-  background: #1a1d27;
-  color: #94a3b8;
+  background: #f9fafb;
+  color: #6b7280;
   font-weight: 600;
   font-size: 0.8rem;
   text-transform: uppercase;
@@ -26,12 +33,13 @@
 }
 
 .server-table tbody tr:hover {
-  background: #1a1d27;
+  background: #f9fafb;
 }
 
 .mono {
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   font-size: 0.85rem;
+  color: #374151;
 }
 
 .status-badge {
@@ -40,13 +48,13 @@
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 500;
-  color: var(--color, #94a3b8);
-  background: color-mix(in srgb, var(--color, #94a3b8) 15%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color, #94a3b8) 40%, transparent);
+  color: var(--color, #6b7280);
+  background: color-mix(in srgb, var(--color, #6b7280) 12%, #ffffff);
+  border: 1px solid color-mix(in srgb, var(--color, #6b7280) 35%, transparent);
 }
 
 .server-table a {
-  color: #60a5fa;
+  color: #2563eb;
   text-decoration: none;
 }
 

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import IpCell from './IpCell.jsx'
+import StopTimePopup from './StopTimePopup.jsx'
 import './ServerTable.css'
+import './StopTimePopup.css'
 
 const STATUS_COLORS = {
   running:         '#22c55e',
@@ -11,8 +13,9 @@ const STATUS_COLORS = {
   retry:           '#a855f7',
 }
 
-export default function ServerTable({ instances, onStart, onStop, onReserve }) {
+export default function ServerTable({ instances, onStart, onStop, onReserve, onSetStopTime }) {
   const [myIp, setMyIp] = useState(null)
+  const [stopPopup, setStopPopup] = useState(null) // instance_id of open popup
 
   useEffect(() => {
     fetch('https://checkip.amazonaws.com/')
@@ -67,7 +70,21 @@ export default function ServerTable({ instances, onStart, onStop, onReserve }) {
               <td>{inst.cost_per_hour != null ? `$${inst.cost_per_hour.toFixed(3)}` : '—'}</td>
               <td>{inst.reserved_by || '—'}</td>
               <td>{inst.scheduled_start || '—'}</td>
-              <td>{inst.stop_at || '—'}</td>
+              <td
+                className="stop-at-cell editable"
+                onClick={() => setStopPopup(inst.instance_id)}
+              >
+                {inst.stop_at
+                  ? <span className="stop-at-value">{inst.stop_at.split(' ')[1]}</span>
+                  : <span className="stop-at-empty">—</span>}
+                {stopPopup === inst.instance_id && (
+                  <StopTimePopup
+                    currentStopAt={inst.stop_at}
+                    onSave={(time) => { onSetStopTime(inst.instance_id, inst.region, time); setStopPopup(null) }}
+                    onClose={() => setStopPopup(null)}
+                  />
+                )}
+              </td>
               <td><IpCell instanceId={inst.instance_id} region={inst.region} prefillIp={myIp} /></td>
               <td className="actions">
                 <button

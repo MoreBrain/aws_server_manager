@@ -25,11 +25,16 @@ class AllowIpRequest(BaseModel):
 
 
 class ReservationRequest(BaseModel):
-    date: str        # "YYYY-MM-DD"
-    start_time: str  # "HH:MM"
-    stop_time: Optional[str]  # "HH:MM" or None = don't stop
-    reserved_by: str
+    date: str                          # "YYYY-MM-DD"
+    start_time: Optional[str] = None   # "HH:MM" or None = stop-only stub
+    stop_time: Optional[str] = None    # "HH:MM" or None = don't stop
+    reserved_by: Optional[str] = None
     region: str
+
+
+class StopTimeRequest(BaseModel):
+    stop_time: Optional[str] = None  # "HH:MM" or None = don't stop
+    region: Optional[str] = None
 
 
 class Reservation(ReservationRequest):

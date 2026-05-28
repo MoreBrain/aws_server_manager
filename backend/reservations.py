@@ -51,6 +51,17 @@ def update_flags(
     _save(data)
 
 
+def update_stop_time(instance_id: str, stop_time: str | None) -> bool:
+    data = _load()
+    for r in data:
+        if r["instance_id"] == instance_id:
+            r["stop_time"] = stop_time
+            r["stopped"] = False
+            _save(data)
+            return True
+    return False
+
+
 def delete(instance_id: str) -> None:
     data = [r for r in _load() if r["instance_id"] != instance_id]
     _save(data)

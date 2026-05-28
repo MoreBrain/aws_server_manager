@@ -1,7 +1,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(17, 24, 39, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,22 +9,24 @@
 }
 
 .modal {
-  background: #1a1d27;
-  border: 1px solid #2d3148;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 2rem;
   width: 100%;
   max-width: 420px;
+  box-shadow: 0 20px 40px rgba(17, 24, 39, 0.12);
 }
 
 .modal h2 {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.25rem;
+  color: #111827;
 }
 
 .modal-subtitle {
-  color: #94a3b8;
+  color: #6b7280;
   font-size: 0.85rem;
   margin-bottom: 1.5rem;
 }
@@ -40,17 +42,17 @@
   flex-direction: column;
   gap: 0.4rem;
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: #6b7280;
 }
 
 .modal input[type="text"],
 .modal input[type="date"],
 .modal input[type="time"] {
-  background: #0f1117;
-  border: 1px solid #2d3148;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
   border-radius: 6px;
   padding: 0.5rem 0.75rem;
-  color: #e2e8f0;
+  color: #111827;
   font-size: 0.9rem;
   width: 100%;
 }
@@ -58,10 +60,12 @@
 .modal input:focus {
   outline: none;
   border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .modal input:disabled {
-  opacity: 0.4;
+  opacity: 0.5;
+  background: #f9fafb;
 }
 
 .stop-time-row {
@@ -79,7 +83,7 @@
   flex-direction: row !important;
   align-items: center;
   gap: 0.4rem;
-  color: #e2e8f0 !important;
+  color: #374151 !important;
   white-space: nowrap;
   cursor: pointer;
 }

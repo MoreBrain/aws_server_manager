@@ -8,8 +8,6 @@ function today() {
 export default function ReserveModal({ instance, onConfirm, onClose }) {
   const [date, setDate] = useState(today())
   const [startTime, setStartTime] = useState('09:00')
-  const [stopTime, setStopTime] = useState('18:00')
-  const [noStopTime, setNoStopTime] = useState(false)
   const [reservedBy, setReservedBy] = useState('')
 
   function handleSubmit(e) {
@@ -17,7 +15,6 @@ export default function ReserveModal({ instance, onConfirm, onClose }) {
     onConfirm({
       date,
       start_time: startTime,
-      stop_time: noStopTime ? null : stopTime,
       reserved_by: reservedBy,
     })
   }
@@ -61,26 +58,6 @@ export default function ReserveModal({ instance, onConfirm, onClose }) {
               onChange={(e) => setStartTime(e.target.value)}
               required
             />
-          </label>
-
-          <label>
-            Stop time
-            <div className="stop-time-row">
-              <input
-                type="time"
-                value={stopTime}
-                disabled={noStopTime}
-                onChange={(e) => setStopTime(e.target.value)}
-              />
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={noStopTime}
-                  onChange={(e) => setNoStopTime(e.target.checked)}
-                />
-                Don't stop
-              </label>
-            </div>
           </label>
 
           <div className="modal-actions">

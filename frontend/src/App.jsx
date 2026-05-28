@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import ServerTable from './components/ServerTable.jsx'
 import ReserveModal from './components/ReserveModal.jsx'
+import fpLogo from './images/fp-logo.png'
 import './App.css'
 
 export default function App() {
@@ -47,6 +48,15 @@ export default function App() {
     fetchInstances()
   }
 
+  async function handleSetStopTime(instanceId, region, stopTime) {
+    await fetch(`/api/instances/${instanceId}/stop-time`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ stop_time: stopTime, region }),
+    })
+    fetchInstances()
+  }
+
   async function handleReserve(instanceId, reservation) {
     await fetch(`/api/instances/${instanceId}/reserve`, {
       method: 'POST',
@@ -60,7 +70,10 @@ export default function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>AWS Server Manager</h1>
+        <div className="app-header-left">
+          <img src={fpLogo} alt="FP" className="app-logo" />
+          <h1>AWS Server Manager</h1>
+        </div>
         <button className="btn btn-secondary" onClick={fetchInstances}>
           Refresh
         </button>
@@ -75,6 +88,7 @@ export default function App() {
             onStart={handleStart}
             onStop={handleStop}
             onReserve={(instance) => setReserveTarget(instance)}
+            onSetStopTime={handleSetStopTime}
           />
         )}
       </main>

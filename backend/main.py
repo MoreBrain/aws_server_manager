@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import aws_client
 import reservations as res_store
 import scheduler
-from models import AllowIpRequest, Instance, ReservationRequest, StartStopRequest
+from models import AllowIpRequest, Instance, ReservationRequest, StartStopRequest, StopTimeRequest
 
 logging.basicConfig(level=logging.INFO)
 
@@ -42,7 +42,7 @@ def get_instances():
         result.append(Instance(
             **inst,
             reserved_by=reservation.reserved_by if reservation else None,
-            scheduled_start=f"{reservation.date} {reservation.start_time}" if reservation else None,
+            scheduled_start=f"{reservation.date} {reservation.start_time}" if reservation and reservation.start_time else None,
             stop_at=f"{reservation.date} {reservation.stop_time}" if reservation and reservation.stop_time else None,
         ))
     return result
@@ -69,6 +69,31 @@ def reserve_instance(instance_id: str, body: ReservationRequest):
     reservation = Reservation(instance_id=instance_id, **body.model_dump())
     res_store.upsert(reservation)
     return {"status": "reserved"}
+
+
+@app.patch("/api/instances/{instance_id}/stop-time")
+def set_stop_time(instance_id: str, body: StopTimeRequest):
+    from models import Reservation
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+
+    if res_store.get_for_instance(instance_id):
+        res_store.update_stop_time(instance_id, body.stop_time)
+    else:
+        if not body.region:
+            raise HTTPException(status_code=400, detail="region required when no reservation exists")
+        today = datetime.now(ZoneInfo("Europe/Berlin")).date().isoformat()
+        stub = Reservation(
+            instance_id=instance_id,
+            date=today,
+            start_time=None,
+            stop_time=body.stop_time,
+            reserved_by=None,
+            region=body.region,
+            started=True,
+        )
+        res_store.upsert(stub)
+    return {"status": "updated"}
 
 
 @app.post("/api/instances/{instance_id}/allow-ip")

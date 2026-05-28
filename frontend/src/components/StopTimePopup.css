@@ -1,0 +1,83 @@
+.stop-at-cell {
+  position: relative;
+  white-space: nowrap;
+}
+
+.stop-at-cell.editable {
+  cursor: pointer;
+}
+
+.stop-at-cell.editable:hover .stop-at-value {
+  text-decoration: underline dotted;
+}
+
+.stop-at-cell.editable:hover .stop-at-empty {
+  color: #6b7280;
+}
+
+.stop-at-value {
+  color: #1f2937;
+}
+
+.stop-at-empty {
+  color: #9ca3af;
+}
+
+.stop-time-popup {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 200;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 180px;
+  box-shadow: 0 12px 24px rgba(17, 24, 39, 0.12);
+}
+
+.stop-time-popup input[type="time"] {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  color: #111827;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.stop-time-popup input[type="time"]:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.stop-time-popup input:disabled {
+  opacity: 0.5;
+  background: #f9fafb;
+}
+
+.stop-time-popup-check {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: #374151;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.stop-time-popup-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.78rem;
+}

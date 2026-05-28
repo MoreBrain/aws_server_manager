@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: #ffffff;
 }
 
 .app-header {
@@ -9,14 +10,26 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
-  background: #1a1d27;
-  border-bottom: 1px solid #2d3148;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.app-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.app-logo {
+  height: 36px;
+  width: auto;
+  display: block;
 }
 
 .app-header h1 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #e2e8f0;
+  color: #111827;
 }
 
 .app-main {
@@ -25,28 +38,28 @@
 }
 
 .status-msg {
-  color: #94a3b8;
+  color: #6b7280;
   text-align: center;
   padding: 2rem;
 }
 
 .status-msg.error {
-  color: #f87171;
+  color: #dc2626;
 }
 
 /* Buttons */
 .btn {
   padding: 0.4rem 0.9rem;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 6px;
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
-  transition: opacity 0.15s;
+  transition: background-color 0.15s, border-color 0.15s, opacity 0.15s;
 }
 
 .btn:hover {
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 .btn:disabled {
@@ -56,5 +69,13 @@
 
 .btn-primary   { background: #3b82f6; color: #fff; }
 .btn-danger    { background: #ef4444; color: #fff; }
-.btn-secondary { background: #334155; color: #e2e8f0; }
+.btn-secondary {
+  background: #ffffff;
+  color: #374151;
+  border-color: #d1d5db;
+}
+.btn-secondary:hover {
+  background: #f9fafb;
+  opacity: 1;
+}
 .btn-warning   { background: #f59e0b; color: #fff; }
