@@ -54,6 +54,13 @@ def list_instances() -> list[dict]:
     for region_code in REGIONS.values():
         try:
             ec2 = session.client("ec2", region_name=region_code)
+
+            reachability: dict[str, str] = {}
+            status_paginator = ec2.get_paginator("describe_instance_status")
+            for page in status_paginator.paginate(IncludeAllInstances=True):
+                for s in page["InstanceStatuses"]:
+                    reachability[s["InstanceId"]] = s["InstanceStatus"]["Status"]
+
             paginator = ec2.get_paginator("describe_instances")
             for page in paginator.paginate(
                 Filters=[{
@@ -68,13 +75,14 @@ def list_instances() -> list[dict]:
                             None,
                         )
                         results.append({
-                            "instance_id":   inst["InstanceId"],
-                            "name":          name,
-                            "region":        region_code,
-                            "instance_type": inst["InstanceType"],
-                            "status":        inst["State"]["Name"],
-                            "public_ip":     inst.get("PublicIpAddress"),
-                            "cost_per_hour": INSTANCE_PRICING.get(inst["InstanceType"]),
+                            "instance_id":     inst["InstanceId"],
+                            "name":            name,
+                            "region":          region_code,
+                            "instance_type":   inst["InstanceType"],
+                            "status":          inst["State"]["Name"],
+                            "instance_status": reachability.get(inst["InstanceId"]),
+                            "public_ip":       inst.get("PublicIpAddress"),
+                            "cost_per_hour":   INSTANCE_PRICING.get(inst["InstanceType"]),
                         })
         except ClientError as e:
             # Log and continue so other regions still show up

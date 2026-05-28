@@ -8,6 +8,7 @@ class Instance(BaseModel):
     region: str
     instance_type: str
     status: str
+    instance_status: Optional[str]  # "ok" / "impaired" / "initializing" / "insufficient-data" / "not-applicable"
     public_ip: Optional[str]
     cost_per_hour: Optional[float]
     reserved_by: Optional[str]

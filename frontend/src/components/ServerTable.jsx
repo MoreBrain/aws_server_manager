@@ -13,6 +13,14 @@ const STATUS_COLORS = {
   retry:           '#a855f7',
 }
 
+const REACHABILITY_COLORS = {
+  ok:                  '#22c55e',
+  impaired:            '#ef4444',
+  initializing:        '#f59e0b',
+  'insufficient-data': '#f59e0b',
+  'not-applicable':    '#94a3b8',
+}
+
 export default function ServerTable({ instances, onStart, onStop, onReserve, onSetStopTime }) {
   const [myIp, setMyIp] = useState(null)
   const [stopPopup, setStopPopup] = useState(null) // instance_id of open popup
@@ -38,6 +46,7 @@ export default function ServerTable({ instances, onStart, onStop, onReserve, onS
             <th>Region</th>
             <th>Type</th>
             <th>Status</th>
+            <th>Reachability</th>
             <th>Public IP</th>
             <th>Cost / hr</th>
             <th>Reserved by</th>
@@ -61,6 +70,18 @@ export default function ServerTable({ instances, onStart, onStop, onReserve, onS
                 >
                   {inst.status}
                 </span>
+              </td>
+              <td>
+                {inst.instance_status
+                  ? (
+                    <span
+                      className="status-badge"
+                      style={{ '--color': REACHABILITY_COLORS[inst.instance_status] ?? '#94a3b8' }}
+                    >
+                      {inst.instance_status}
+                    </span>
+                  )
+                  : '—'}
               </td>
               <td className="mono">
                 {inst.public_ip
