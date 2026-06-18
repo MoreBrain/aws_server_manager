@@ -6,6 +6,7 @@ from zoneinfo import ZoneInfo
 
 import aws_client
 import reservations as res_store
+import usage as usage_store
 
 log = logging.getLogger("scheduler")
 
@@ -62,5 +63,6 @@ def _tick() -> None:
             try:
                 aws_client.stop_instance(reservation.instance_id, reservation.region)
                 res_store.delete(reservation.instance_id)
+                usage_store.delete(reservation.instance_id)
             except Exception as e:
                 log.error("Failed to stop %s: %s", reservation.instance_id, e)

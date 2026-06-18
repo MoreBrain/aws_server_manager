@@ -1,0 +1,23 @@
+.usedby-cell {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.usedby-cell input {
+  width: 64px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  color: #111827;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.usedby-cell input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}

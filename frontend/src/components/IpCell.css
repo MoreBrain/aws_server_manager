@@ -12,7 +12,8 @@
   padding: 0.35rem 0.5rem;
   color: #111827;
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  font-size: 0.82rem;
+  font-size: 0.65rem;
+  letter-spacing: -0.02em;
 }
 
 .ip-cell input:focus {

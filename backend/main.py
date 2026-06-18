@@ -2,13 +2,15 @@ import asyncio
 import logging
 from contextlib import asynccontextmanager
 
+from botocore.exceptions import ClientError
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 import aws_client
 import reservations as res_store
 import scheduler
-from models import AllowIpRequest, Instance, ReservationRequest, StartStopRequest, StopTimeRequest
+import usage as usage_store
+from models import AllowIpRequest, Instance, ReservationRequest, StartStopRequest, StopTimeRequest, UsedByRequest
 
 logging.basicConfig(level=logging.INFO)
 
@@ -44,13 +46,21 @@ def get_instances():
             reserved_by=reservation.reserved_by if reservation else None,
             scheduled_start=f"{reservation.date} {reservation.start_time}" if reservation and reservation.start_time else None,
             stop_at=f"{reservation.date} {reservation.stop_time}" if reservation and reservation.stop_time else None,
+            used_by=usage_store.get(inst["instance_id"]),
         ))
     return result
 
 
 @app.post("/api/instances/{instance_id}/start")
 def start_instance(instance_id: str, body: StartStopRequest):
-    ok = aws_client.start_instance(instance_id, body.region)
+    try:
+        ok = aws_client.start_instance(instance_id, body.region)
+    except ClientError as e:
+        err = e.response["Error"]
+        raise HTTPException(
+            status_code=502,
+            detail=f"{err.get('Code', 'AWSError')}: {err.get('Message', 'Unknown AWS error')}",
+        )
     if not ok:
         raise HTTPException(status_code=503, detail="InsufficientInstanceCapacity")
     return {"status": "starting"}
@@ -60,6 +70,7 @@ def start_instance(instance_id: str, body: StartStopRequest):
 def stop_instance(instance_id: str, body: StartStopRequest):
     aws_client.stop_instance(instance_id, body.region)
     res_store.delete(instance_id)
+    usage_store.delete(instance_id)
     return {"status": "stopping"}
 
 
@@ -94,6 +105,13 @@ def set_stop_time(instance_id: str, body: StopTimeRequest):
         )
         res_store.upsert(stub)
     return {"status": "updated"}
+
+
+@app.patch("/api/instances/{instance_id}/used-by")
+def set_used_by(instance_id: str, body: UsedByRequest):
+    initials = body.used_by.strip() if body.used_by else None
+    usage_store.set_initials(instance_id, initials)
+    return {"status": "updated", "used_by": initials}
 
 
 @app.post("/api/instances/{instance_id}/allow-ip")

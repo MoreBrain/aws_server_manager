@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import IpCell from './IpCell.jsx'
+import UsedByCell from './UsedByCell.jsx'
 import StopTimePopup from './StopTimePopup.jsx'
 import './ServerTable.css'
 import './StopTimePopup.css'
@@ -21,7 +22,7 @@ const REACHABILITY_COLORS = {
   'not-applicable':    '#94a3b8',
 }
 
-export default function ServerTable({ instances, onStart, onStop, onReserve, onSetStopTime }) {
+export default function ServerTable({ instances, busy = {}, onStart, onStop, onReserve, onSetStopTime, onSetUsedBy }) {
   const [myIp, setMyIp] = useState(null)
   const [stopPopup, setStopPopup] = useState(null) // instance_id of open popup
 
@@ -50,6 +51,7 @@ export default function ServerTable({ instances, onStart, onStop, onReserve, onS
             <th>Public IP</th>
             <th>Cost / hr</th>
             <th>Reserved by</th>
+            <th>Used by</th>
             <th>Start</th>
             <th>Stop at</th>
             <th>Home Office IP</th>
@@ -90,6 +92,13 @@ export default function ServerTable({ instances, onStart, onStop, onReserve, onS
               </td>
               <td>{inst.cost_per_hour != null ? `$${inst.cost_per_hour.toFixed(3)}` : '—'}</td>
               <td>{inst.reserved_by || '—'}</td>
+              <td>
+                <UsedByCell
+                  instanceId={inst.instance_id}
+                  usedBy={inst.used_by}
+                  onSave={onSetUsedBy}
+                />
+              </td>
               <td>{inst.scheduled_start || '—'}</td>
               <td
                 className="stop-at-cell editable"
@@ -110,20 +119,25 @@ export default function ServerTable({ instances, onStart, onStop, onReserve, onS
               <td className="actions">
                 <button
                   className="btn btn-primary"
-                  disabled={inst.status === 'running' || inst.status === 'pending'}
+                  disabled={busy[inst.instance_id] || inst.status === 'running' || inst.status === 'pending'}
                   onClick={() => onStart(inst.instance_id, inst.region)}
                 >
-                  Start
+                  {busy[inst.instance_id] === 'start'
+                    ? <><span className="btn-spinner" /> Starting…</>
+                    : 'Start'}
                 </button>
                 <button
                   className="btn btn-danger"
-                  disabled={inst.status === 'stopped' || inst.status === 'stopping'}
+                  disabled={busy[inst.instance_id] || inst.status === 'stopped' || inst.status === 'stopping'}
                   onClick={() => onStop(inst.instance_id, inst.region)}
                 >
-                  Stop
+                  {busy[inst.instance_id] === 'stop'
+                    ? <><span className="btn-spinner" /> Stopping…</>
+                    : 'Stop'}
                 </button>
                 <button
                   className="btn btn-warning"
+                  disabled={!!busy[inst.instance_id]}
                   onClick={() => onReserve(inst)}
                 >
                   Reserve

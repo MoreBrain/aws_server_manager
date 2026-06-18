@@ -14,6 +14,7 @@ class Instance(BaseModel):
     reserved_by: Optional[str]
     scheduled_start: Optional[str]  # "YYYY-MM-DD HH:MM" or None
     stop_at: Optional[str]  # "YYYY-MM-DD HH:MM" or None
+    used_by: Optional[str]  # initials of the person currently using the server
 
 
 class StartStopRequest(BaseModel):
@@ -36,6 +37,10 @@ class ReservationRequest(BaseModel):
 class StopTimeRequest(BaseModel):
     stop_time: Optional[str] = None  # "HH:MM" or None = don't stop
     region: Optional[str] = None
+
+
+class UsedByRequest(BaseModel):
+    used_by: Optional[str] = None  # initials or None = clear
 
 
 class Reservation(ReservationRequest):
